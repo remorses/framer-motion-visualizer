@@ -129,7 +129,7 @@ function App() {
     const container = useRef(null)
     let videoRef = useRef<HTMLVideoElement>(null)
     return (
-        <div className='flex mt-12 text-base flex-col w-full items-center my-12 gap-16 min-w-0'>
+        <div className='flex mt-12 text-base flex-col w-full items-center my-12 gap-12 min-w-0'>
             {/* <pre className=''>{JSON.stringify(state, null, 4)}</pre> */}
             {/* <pre className=''>{JSON.stringify(chartData, null, 4)}</pre> */}
             <div className='text-center space-y-4'>
@@ -149,7 +149,7 @@ function App() {
                 </h2>
             </div>
 
-            <div className='flex max-md:w-full grow flex-col md:flex-row gap-12 p-12'>
+            <div className='flex max-md:w-full grow flex-col md:flex-row gap-12 px-8'>
                 <div
                     ref={container}
                     className='bg-gray-100 min-w-0 p-[10px] items-start justify-center flex rounded-md flex-col md:w-[600px]'
@@ -232,7 +232,6 @@ function App() {
                 </div>
             </div>
 
-            <div className='mt-12'></div>
             <div className='flex flex-col items-center'>
                 <div
                     style={{ width: lastValue + size / 2 }}
