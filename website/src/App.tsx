@@ -89,12 +89,18 @@ function App() {
             animations.forEach((a) => a.stop())
         }
     }, [state, count])
+    const container = useRef(null)
     return (
         <div className='flex flex-col w-full items-center m-12'>
             <pre className=''>{JSON.stringify(state, null, 4)}</pre>
             <div className='flex  max-w-[1200px] gap-12'>
-                <div className='bg-gray-100 p-[10px] items-start justify-center h-full flex rounded flex-col min-h-[400px] w-[600px]'>
+                <div
+                    ref={container}
+                    className='bg-gray-100 p-[10px] items-start justify-center h-full flex rounded flex-col min-h-[400px] w-[600px]'
+                >
                     <motion.div
+                        drag
+                        dragConstraints={container}
                         // animate={controls}
                         style={{ x }}
                         // animate={{
