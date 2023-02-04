@@ -12,7 +12,8 @@ import {
 } from '@tremor/react'
 
 import { BadgeSelect } from 'beskar/src/analytics/components/badge-select'
-import { Button, RangeSlider } from 'beskar/src/landing/form'
+import { RangeSlider } from 'beskar/src/landing/form'
+// import { Button, Link } from 'beskar/src/landing'
 
 import logo from './logo.svg'
 import './index.css'
@@ -128,9 +129,22 @@ function App() {
     const container = useRef(null)
     let videoRef = useRef<HTMLVideoElement>(null)
     return (
-        <div className='flex flex-col w-full items-center m-12'>
+        <div className='flex mt-12 text-base flex-col w-full items-center m-12 gap-16'>
             {/* <pre className=''>{JSON.stringify(state, null, 4)}</pre> */}
             {/* <pre className=''>{JSON.stringify(chartData, null, 4)}</pre> */}
+            <div className='text-center space-y-4'>
+                <h1 className='text-5xl font-bold tracking-tight'>
+                    Framer Motion Visualizer
+                </h1>
+                <h2 className='text-xl leading-relaxed opacity-70'>
+                    Visualize Framer Motion animations and see how they work
+                    <br />
+                    Made by{' '}
+                    <a href='https://twitter.com/__morse' className='appearance-none font-semibold '>
+                        @morse
+                    </a>
+                </h2>
+            </div>
             <div className=' max-w-[1200px]'>
                 <div className='flex gap-12'>
                     <div
