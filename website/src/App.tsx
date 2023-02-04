@@ -85,7 +85,7 @@ function App() {
     // const [count, setCount] = useState(0)
 
     const [loaded, setLoaded] = useState(false)
-    let lastValue = 500
+    let lastValue = 300
     useDebouncedEffect(() => {
         let animations = []
         x.jump(0)
@@ -129,7 +129,7 @@ function App() {
     const container = useRef(null)
     let videoRef = useRef<HTMLVideoElement>(null)
     return (
-        <div className='flex mt-12 text-base flex-col w-full items-center m-12 gap-16'>
+        <div className='flex mt-12 text-base flex-col w-full items-center my-12 gap-16 min-w-0'>
             {/* <pre className=''>{JSON.stringify(state, null, 4)}</pre> */}
             {/* <pre className=''>{JSON.stringify(chartData, null, 4)}</pre> */}
             <div className='text-center space-y-4'>
@@ -140,34 +140,37 @@ function App() {
                     Visualize Framer Motion animations and see how they work
                     <br />
                     Made by{' '}
-                    <a href='https://twitter.com/__morse' className='appearance-none font-semibold '>
+                    <a
+                        href='https://twitter.com/__morse'
+                        className='appearance-none font-semibold '
+                    >
                         @morse
                     </a>
                 </h2>
             </div>
-            <div className=' max-w-[1200px]'>
-                <div className='flex gap-12'>
-                    <div
-                        ref={container}
-                        className='bg-gray-100 p-[10px] items-start justify-center h-full flex rounded flex-col w-[600px]'
-                    >
-                        <LineChart
-                            marginTop='mt-8'
-                            data={chartData}
-                            dataKey='time'
-                            categories={['value']}
-                            colors={['blue']}
-                            showLegend={false}
-                            valueFormatter={(x) => x.toFixed(0) + 'px'}
-                            yAxisWidth='w-12'
-                            showAnimation={false}
-                            height='h-60'
-                            startEndOnly={!!chartData.length}
-                            // showXAxis={false}
-                            // showGridLines={false}
-                        />
 
-                        {/* <motion.video
+            <div className='flex max-md:w-full grow flex-col md:flex-row gap-12 p-12'>
+                <div
+                    ref={container}
+                    className='bg-gray-100 min-w-0 p-[10px] items-start justify-center flex rounded-md flex-col md:w-[600px]'
+                >
+                    <LineChart
+                        marginTop='mt-8'
+                        data={chartData}
+                        dataKey='time'
+                        categories={['value']}
+                        colors={['blue']}
+                        showLegend={false}
+                        valueFormatter={(x) => x.toFixed(0) + 'px'}
+                        yAxisWidth='w-12'
+                        showAnimation={false}
+                        height='h-60'
+                        startEndOnly={!!chartData.length}
+                        // showXAxis={false}
+                        // showGridLines={false}
+                    />
+
+                    {/* <motion.video
                         ref={videoRef}
                         src='https://threejs.org/examples/textures/sintel.ogv'
                         onLoad={() => {
@@ -179,86 +182,84 @@ function App() {
                         muted
                         loop
                     /> */}
-                    </div>
-                    <div className='flex flex-col gap-6'>
-                        <BadgeSelect.Container>
-                            <BadgeSelect
-                                onChange={(mode) => {
-                                    setMode(mode as any)
-                                    setState(initialState(mode))
-                                }}
-                                selected={mode}
-                                options={['duration', 'mass'].map((x) => ({
-                                    value: x,
-                                    name: x,
-                                }))}
-                            />
-                        </BadgeSelect.Container>
-                        {Object.keys(config).map((key) => {
-                            let conf = config[key as keyof typeof config]
-                            let value = state[key as keyof typeof state] || 0
-                            return (
-                                <div className='text-sm'>
-                                    <div className='flex'>
-                                        <div className='capitalize'>{key}</div>
-                                        <div className='grow'></div>
-                                        <div className='text-xs font-mono'>
-                                            {value}
-                                        </div>
-                                    </div>
-                                    <RangeSlider
-                                        value={value}
-                                        className='text-sm'
-                                        onChange={(e) => {
-                                            playbackRate.stop()
-                                            playbackRate.jump(0)
-                                            setState((prev) => {
-                                                return {
-                                                    ...prev,
-                                                    [key]: Number(
-                                                        e.target.value,
-                                                    ),
-                                                }
-                                            })
-                                        }}
-                                        step={conf.step}
-                                        min={conf.min}
-                                        max={conf.max}
-                                    />
-                                </div>
-                            )
-                        })}
-                    </div>
                 </div>
-                <div className='mt-12'></div>
-                <div className='flex flex-col items-center'>
-                    <div
-                        style={{ width: lastValue + size / 2 }}
-                        className='relative items-start justify-center h-full flex rounded flex-col  self-center'
-                    >
-                        <div className='absolute h-1 rounded bg-gray-200 w-full'></div>
-                        <motion.div
-                            drag
-                            dragConstraints={container}
-                            // animate={controls}
-                            style={{ x, width: size, height: size }}
-                            // animate={{
-                            //     x: 500,
-                            //     transition: { ...state },
-                            // }}
-                            // transition={{ ...state }}
-                            // animate={{
-                            //     x: 500,
-                            // }}
-                            // transition={{
-                            //     ...state,
-                            //     repeat: Infinity,
-                            //     repeatType: 'reverse',
-                            // }}
+                <div className='flex flex-col gap-6'>
+                    <BadgeSelect.Container className='max-w-max'>
+                        <BadgeSelect
+                            onChange={(mode) => {
+                                setMode(mode as any)
+                                setState(initialState(mode))
+                            }}
+                            selected={mode}
+                            options={['duration', 'mass'].map((x) => ({
+                                value: x,
+                                name: x,
+                            }))}
+                        />
+                    </BadgeSelect.Container>
+                    {Object.keys(config).map((key) => {
+                        let conf = config[key as keyof typeof config]
+                        let value = state[key as keyof typeof state] || 0
+                        return (
+                            <div className='text-sm'>
+                                <div className='flex'>
+                                    <div className='capitalize'>{key}</div>
+                                    <div className='grow'></div>
+                                    <div className='text-xs font-mono'>
+                                        {value}
+                                    </div>
+                                </div>
+                                <RangeSlider
+                                    value={value}
+                                    className='text-sm'
+                                    onChange={(e) => {
+                                        playbackRate.stop()
+                                        playbackRate.jump(0)
+                                        setState((prev) => {
+                                            return {
+                                                ...prev,
+                                                [key]: Number(e.target.value),
+                                            }
+                                        })
+                                    }}
+                                    step={conf.step}
+                                    min={conf.min}
+                                    max={conf.max}
+                                />
+                            </div>
+                        )
+                    })}
+                </div>
+            </div>
 
-                            className='z-1 relative rounded-full bg-blue-500'
-                        ></motion.div>
-                    </div>
+            <div className='mt-12'></div>
+            <div className='flex flex-col items-center'>
+                <div
+                    style={{ width: lastValue + size / 2 }}
+                    className='relative items-start justify-center flex rounded flex-col'
+                >
+                    <div className='absolute h-1 rounded bg-gray-200 w-full'></div>
+                    <motion.div
+                        drag
+                        dragConstraints={container}
+                        // animate={controls}
+                        style={{ x, width: size, height: size }}
+                        // animate={{
+                        //     x: 500,
+                        //     transition: { ...state },
+                        // }}
+                        // transition={{ ...state }}
+                        // animate={{
+                        //     x: 500,
+                        // }}
+                        // transition={{
+                        //     ...state,
+                        //     repeat: Infinity,
+                        //     repeatType: 'reverse',
+                        // }}
+
+                        className='z-1 relative rounded-full bg-blue-500'
+                    ></motion.div>
                 </div>
             </div>
         </div>
