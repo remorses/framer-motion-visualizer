@@ -81,10 +81,10 @@ function App() {
                   },
               } as const)
 
-    const [count, setCount] = useState(0)
+    // const [count, setCount] = useState(0)
 
     const [loaded, setLoaded] = useState(false)
-    let lastValue = 480
+    let lastValue = 500
     useDebouncedEffect(() => {
         let animations = []
         x.jump(0)
@@ -96,7 +96,7 @@ function App() {
         return () => {
             animations.forEach((a) => a.stop())
         }
-    }, [loaded, state, count])
+    }, [loaded, state])
     let [chartData, setChartData] = useState([])
     useDebouncedEffect(() => {
         let from = 0
@@ -124,7 +124,7 @@ function App() {
             })),
         )
     }, [state])
-
+    let size = 40
     const container = useRef(null)
     let videoRef = useRef<HTMLVideoElement>(null)
     return (
@@ -135,28 +135,24 @@ function App() {
                 <div className='flex gap-12'>
                     <div
                         ref={container}
-                        className='bg-gray-100 p-[10px] items-start justify-center h-full flex rounded flex-col min-h-[400px] w-[600px]'
+                        className='bg-gray-100 p-[10px] items-start justify-center h-full flex rounded flex-col w-[600px]'
                     >
-                        <motion.div
-                            drag
-                            dragConstraints={container}
-                            // animate={controls}
-                            style={{ x }}
-                            // animate={{
-                            //     x: 500,
-                            //     transition: { ...state },
-                            // }}
-                            // transition={{ ...state }}
-                            // animate={{
-                            //     x: 500,
-                            // }}
-                            // transition={{
-                            //     ...state,
-                            //     repeat: Infinity,
-                            //     repeatType: 'reverse',
-                            // }}
-                            className='rounded-full w-[100px] h-[100px] bg-black'
-                        ></motion.div>
+                        <LineChart
+                            marginTop='mt-8'
+                            data={chartData}
+                            dataKey='time'
+                            categories={['value']}
+                            colors={['blue']}
+                            showLegend={false}
+                            valueFormatter={(x) => x.toFixed(0) + 'px'}
+                            yAxisWidth='w-12'
+                            showAnimation={false}
+                            height='h-60'
+                            startEndOnly={!!chartData.length}
+                            // showXAxis={false}
+                            // showGridLines={false}
+                        />
+
                         {/* <motion.video
                         ref={videoRef}
                         src='https://threejs.org/examples/textures/sintel.ogv'
@@ -218,39 +214,37 @@ function App() {
                                 </div>
                             )
                         })}
-                        {/* <Button
-                        onClick={() => {
-                            playbackRate.jump(0.25)
-                            let c = animate(playbackRate, 1, {
-                                type: 'spring',
-                                onUpdate: (v) => {
-                                    videoRef.current.playbackRate = v
-                                },
-                                ...state,
-                            })
-                        }}
-                    >
-                        Click
-                    </Button> */}
                     </div>
                 </div>
+                <div className='mt-12'></div>
+                <div className='flex flex-col items-center'>
+                    <div
+                        style={{ width: lastValue + size / 2 }}
+                        className='relative items-start justify-center h-full flex rounded flex-col  self-center'
+                    >
+                        <div className='absolute h-1 rounded bg-gray-200 w-full'></div>
+                        <motion.div
+                            drag
+                            dragConstraints={container}
+                            // animate={controls}
+                            style={{ x, width: size, height: size }}
+                            // animate={{
+                            //     x: 500,
+                            //     transition: { ...state },
+                            // }}
+                            // transition={{ ...state }}
+                            // animate={{
+                            //     x: 500,
+                            // }}
+                            // transition={{
+                            //     ...state,
+                            //     repeat: Infinity,
+                            //     repeatType: 'reverse',
+                            // }}
 
-                <div className='w-full'>
-                    <LineChart
-                        marginTop='mt-8'
-                        data={chartData}
-                        dataKey='time'
-                        categories={['value']}
-                        colors={['blue']}
-                        showLegend={false}
-                        valueFormatter={valueFormatterAbsolute}
-                        yAxisWidth='w-10'
-                        showAnimation={false}
-                        height='h-80'
-                        // startEndOnly={!!chartData.length}
-                        showXAxis={false}
-                        // showGridLines={false}
-                    />
+                            className='z-1 relative rounded-full bg-blue-500'
+                        ></motion.div>
+                    </div>
                 </div>
             </div>
         </div>
