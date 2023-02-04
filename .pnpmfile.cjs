@@ -5,7 +5,7 @@ let enforceSingleVersion = [
     // 'next-auth',
     // 'next',
     'date-fns',
-    'styled-jsx',
+    // 'styled-jsx',
     'nprogress',
     'tailwindcss',
     '@chakra-ui/react',

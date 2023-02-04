@@ -8,7 +8,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "beskar": "workspace:*",
     "classnames": "^2.3.2",
+    "framer-motion": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
