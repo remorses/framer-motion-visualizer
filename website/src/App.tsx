@@ -64,20 +64,31 @@ function App() {
         },
     } as const
 
-    // const [count, setCount] = useState(0)
+    const [count, setCount] = useState(0)
+
     useEffect(() => {
+        let animations = []
         let c = animate(x, 500, {
             type: 'spring',
-            from: 0,
-            ...state,
-            repeat: Infinity,
-            repeatType: 'reverse',
-        })
 
+            onComplete: () => {
+                console.log('complete')
+                let c = animate(x, 0, {
+                    type: 'spring',
+                    ...state,
+                    onComplete() {
+                        setCount(count + 1)
+                    },
+                })
+                animations.push(c)
+            },
+            ...state,
+        })
+        animations.push(c)
         return () => {
-            c.stop()
+            animations.forEach((a) => a.stop())
         }
-    }, [state])
+    }, [state, count])
     return (
         <div className='flex flex-col w-full items-center m-12'>
             <pre className=''>{JSON.stringify(state, null, 4)}</pre>
