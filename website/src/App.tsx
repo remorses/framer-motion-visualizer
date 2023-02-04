@@ -1,5 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
-import { RangeSlider } from 'beskar/src/landing/form'
+import '@tremor/react/dist/esm/tremor.css'
+import {
+    Card,
+    Title,
+    Text,
+    LineChart,
+    Toggle,
+    ToggleItem,
+    Flex,
+    Block,
+} from '@tremor/react'
+
+import { BadgeSelect } from 'beskar/src/analytics/components/badge-select'
+import { Button, RangeSlider } from 'beskar/src/landing/form'
 
 import logo from './logo.svg'
 import './index.css'
@@ -10,153 +23,242 @@ import {
     useAnimationControls,
     Spring,
     animate,
+    spring,
 } from 'framer-motion'
 import React from 'react'
 
 function App() {
-    const [state, setState] = useState<Partial<Spring>>({
-        stiffness: 100,
-        damping: 10,
-        mass: 1,
-        // duration: 0.8,
-        bounce: 0,
-        restSpeed: 0.01,
-        restDelta: 0.01,
-    })
+    const [mode, setMode] = useState<'duration' | 'mass'>('duration')
 
+    const initialState = (mode) =>
+        mode === 'duration'
+            ? { duration: 1, bounce: 0 }
+            : { mass: 1, damping: 10, stiffness: 100 }
+    const [state, setState] = useState<Partial<Spring>>(initialState(mode))
+
+    let playbackRate = useMotionValue(1)
     let x = useMotionValue(0)
 
-    const config = {
-        stiffness: {
-            min: 0,
-            max: 1000,
-            step: 1,
-        },
-        damping: {
-            min: 0,
-            max: 100,
-            step: 1,
-        },
-        mass: {
-            min: 1,
-            max: 100,
-            step: 1,
-        },
-        // duration: {
-        //     min: 0,
-        //     max: 10,
-        //     step: 0.1,
-        // },
-        bounce: {
-            min: 0,
-            max: 10,
-            step: 0.01,
-        },
-        restSpeed: {
-            min: 0,
-            max: 10,
-            step: 0.1,
-        },
-        restDelta: {
-            min: 0,
-            max: 10,
-            step: 0.1,
-        },
-    } as const
+    const config =
+        mode === 'duration'
+            ? {
+                  duration: {
+                      min: 0,
+                      max: 10,
+                      step: 0.1,
+                  },
+                  bounce: {
+                      min: 0,
+                      max: 1,
+                      step: 0.01,
+                  },
+                  // restSpeed: {
+                  //     min: 0,
+                  //     max: 10,
+                  //     step: 0.1,
+                  // },
+                  // restDelta: {
+                  //     min: 0,
+                  //     max: 10,
+                  //     step: 0.1,
+                  // },
+              }
+            : ({
+                  stiffness: {
+                      min: 0,
+                      max: 1000,
+                      step: 1,
+                  },
+                  damping: {
+                      min: 0,
+                      max: 100,
+                      step: 1,
+                  },
+                  mass: {
+                      min: 1,
+                      max: 100,
+                      step: 1,
+                  },
+              } as const)
 
     const [count, setCount] = useState(0)
 
-    useEffect(() => {
+    const [loaded, setLoaded] = useState(false)
+    let lastValue = 480
+    useDebouncedEffect(() => {
         let animations = []
-        let c = animate(x, 500, {
+        x.jump(0)
+        let c = animate(x, lastValue, {
             type: 'spring',
-
-            onComplete: () => {
-                console.log('complete')
-                let c = animate(x, 0, {
-                    type: 'spring',
-                    ...state,
-                    onComplete() {
-                        setCount(count + 1)
-                    },
-                })
-                animations.push(c)
-            },
             ...state,
         })
         animations.push(c)
         return () => {
             animations.forEach((a) => a.stop())
         }
-    }, [state, count])
+    }, [loaded, state, count])
+    let [chartData, setChartData] = useState([])
+    useDebouncedEffect(() => {
+        let from = 0
+
+        let duration = state.duration ? state.duration * 1000 : 1000
+        let springAnimation = spring({
+            keyframes: [from, lastValue],
+            ...state,
+            duration,
+        })
+        let keyframes = []
+        let t = 0
+        let springTimeResolution = 10
+        let status = { done: false, value: from }
+        // let maxT = state.duration + 3 || 30
+        while (!status.done) {
+            status = springAnimation.next(t)
+            keyframes.push(status.value)
+            t += springTimeResolution
+        }
+        setChartData(
+            keyframes.map((v, i) => ({
+                time: i * springTimeResolution,
+                value: v,
+            })),
+        )
+    }, [state])
+
     const container = useRef(null)
+    let videoRef = useRef<HTMLVideoElement>(null)
     return (
         <div className='flex flex-col w-full items-center m-12'>
-            <pre className=''>{JSON.stringify(state, null, 4)}</pre>
-            <div className='flex  max-w-[1200px] gap-12'>
-                <div
-                    ref={container}
-                    className='bg-gray-100 p-[10px] items-start justify-center h-full flex rounded flex-col min-h-[400px] w-[600px]'
-                >
-                    <motion.div
-                        drag
-                        dragConstraints={container}
-                        // animate={controls}
-                        style={{ x }}
-                        // animate={{
-                        //     x: 500,
-                        //     transition: { ...state },
-                        // }}
-                        // transition={{ ...state }}
-                        // animate={{
-                        //     x: 500,
-                        // }}
-                        // transition={{
-                        //     ...state,
-                        //     repeat: Infinity,
-                        //     repeatType: 'reverse',
-                        // }}
-                        className='rounded-full w-[100px] h-[100px] bg-black'
-                    ></motion.div>
-                </div>
-                <div className='flex flex-col gap-6'>
-                    {Object.keys(config).map((key) => {
-                        let conf = config[key as keyof typeof config]
-                        let value = state[key as keyof typeof state] || 0
-                        return (
-                            <div className='text-sm'>
-                                <div className='flex'>
-                                    <div className='capitalize'>{key}</div>
-                                    <div className='grow'></div>
-                                    <div className='text-xs font-mono'>
-                                        {value}
+            {/* <pre className=''>{JSON.stringify(state, null, 4)}</pre> */}
+            {/* <pre className=''>{JSON.stringify(chartData, null, 4)}</pre> */}
+            <div className=' max-w-[1200px]'>
+                <div className='flex gap-12'>
+                    <div
+                        ref={container}
+                        className='bg-gray-100 p-[10px] items-start justify-center h-full flex rounded flex-col min-h-[400px] w-[600px]'
+                    >
+                        <motion.div
+                            drag
+                            dragConstraints={container}
+                            // animate={controls}
+                            style={{ x }}
+                            // animate={{
+                            //     x: 500,
+                            //     transition: { ...state },
+                            // }}
+                            // transition={{ ...state }}
+                            // animate={{
+                            //     x: 500,
+                            // }}
+                            // transition={{
+                            //     ...state,
+                            //     repeat: Infinity,
+                            //     repeatType: 'reverse',
+                            // }}
+                            className='rounded-full w-[100px] h-[100px] bg-black'
+                        ></motion.div>
+                        {/* <motion.video
+                        ref={videoRef}
+                        src='https://threejs.org/examples/textures/sintel.ogv'
+                        onLoad={() => {
+                            setLoaded(true)
+                        }}
+                        controls
+                        playsInline
+                        autoPlay
+                        muted
+                        loop
+                    /> */}
+                    </div>
+                    <div className='flex flex-col gap-6'>
+                        <BadgeSelect.Container>
+                            <BadgeSelect
+                                onChange={(mode) => {
+                                    setMode(mode as any)
+                                    setState(initialState(mode))
+                                }}
+                                selected={mode}
+                                options={['duration', 'mass'].map((x) => ({
+                                    value: x,
+                                    name: x,
+                                }))}
+                            />
+                        </BadgeSelect.Container>
+                        {Object.keys(config).map((key) => {
+                            let conf = config[key as keyof typeof config]
+                            let value = state[key as keyof typeof state] || 0
+                            return (
+                                <div className='text-sm'>
+                                    <div className='flex'>
+                                        <div className='capitalize'>{key}</div>
+                                        <div className='grow'></div>
+                                        <div className='text-xs font-mono'>
+                                            {value}
+                                        </div>
                                     </div>
+                                    <RangeSlider
+                                        value={value}
+                                        className='text-sm'
+                                        onChange={(e) => {
+                                            playbackRate.stop()
+                                            playbackRate.jump(0)
+                                            setState((prev) => {
+                                                return {
+                                                    ...prev,
+                                                    [key]: Number(
+                                                        e.target.value,
+                                                    ),
+                                                }
+                                            })
+                                        }}
+                                        step={conf.step}
+                                        min={conf.min}
+                                        max={conf.max}
+                                    />
                                 </div>
-                                <RangeSlider
-                                    value={value}
-                                    className='text-sm'
-                                    onChange={(e) => {
-                                        x.stop()
-                                        x.jump(0)
-                                        setState((prev) => {
-                                            return {
-                                                ...prev,
-                                                [key]: Number(e.target.value),
-                                            }
-                                        })
-                                    }}
-                                    step={conf.step}
-                                    min={conf.min}
-                                    max={conf.max}
-                                />
-                            </div>
-                        )
-                    })}
+                            )
+                        })}
+                        {/* <Button
+                        onClick={() => {
+                            playbackRate.jump(0.25)
+                            let c = animate(playbackRate, 1, {
+                                type: 'spring',
+                                onUpdate: (v) => {
+                                    videoRef.current.playbackRate = v
+                                },
+                                ...state,
+                            })
+                        }}
+                    >
+                        Click
+                    </Button> */}
+                    </div>
+                </div>
+
+                <div className='w-full'>
+                    <LineChart
+                        marginTop='mt-8'
+                        data={chartData}
+                        dataKey='time'
+                        categories={['value']}
+                        colors={['blue']}
+                        showLegend={false}
+                        valueFormatter={valueFormatterAbsolute}
+                        yAxisWidth='w-10'
+                        showAnimation={false}
+                        height='h-80'
+                        // startEndOnly={!!chartData.length}
+                        showXAxis={false}
+                        // showGridLines={false}
+                    />
                 </div>
             </div>
         </div>
     )
 }
+
+const valueFormatterAbsolute = (number: number) =>
+    Intl.NumberFormat('us').format(number).toString()
 
 export default App
 
@@ -170,7 +272,6 @@ export function useDebouncedEffect(callback, deps = [], delay = 120) {
 
         if (firstTime) {
             data.current.firstTime = false
-            return
         }
 
         const handler = setTimeout(() => {
