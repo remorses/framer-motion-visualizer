@@ -298,7 +298,7 @@ function App() {
                     className='text-sm font-semibold'
                     onClick={() => setCount((x) => x + 1)}
                 >
-                    Repeat
+                    Replay
                 </Button>
             </div>
         </div>
