@@ -45,13 +45,11 @@ html.dark {
 }
 
 #__next {
-    min-height: 100vh !important;
-    /* margin-right: calc(-1 * (100vw - 100%)); */
 }
+
 body {
-    min-height: 100%;
-    height: auto !important;
     position: relative;
+    margin: 0;
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
