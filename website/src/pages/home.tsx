@@ -107,32 +107,36 @@ function App() {
         }
     }, [count, state])
     let [chartData, setChartData] = useState([])
-    useDebouncedEffect(() => {
-        let from = 0
+    useDebouncedEffect(
+        () => {
+            let from = 0
 
-        let duration = state.duration ? state.duration * 1000 : 1000
-        let springAnimation = spring({
-            keyframes: [from, lastValue],
-            ...state,
-            duration,
-        })
-        let keyframes = []
-        let t = 0
-        let springTimeResolution = 20
-        let status = { done: false, value: from }
-        // let maxT = state.duration + 3 || 30
-        while (!status.done) {
-            status = springAnimation.next(t)
-            keyframes.push(status.value)
-            t += springTimeResolution
-        }
-        setChartData(
-            keyframes.map((v, i) => ({
-                time: i * springTimeResolution,
-                value: v,
-            })),
-        )
-    }, [state])
+            let duration = state.duration ? state.duration * 1000 : 1000
+            let springAnimation = spring({
+                keyframes: [from, lastValue],
+                ...state,
+                duration,
+            })
+            let keyframes = []
+            let t = 0
+            let springTimeResolution = 20
+            let status = { done: false, value: from }
+            // let maxT = state.duration + 3 || 30
+            while (!status.done) {
+                status = springAnimation.next(t)
+                keyframes.push(status.value)
+                t += springTimeResolution
+            }
+            setChartData(
+                keyframes.map((v, i) => ({
+                    time: i * springTimeResolution,
+                    value: v,
+                })),
+            )
+        },
+        [state],
+        50,
+    )
     let size = 40
     const container = useRef(null)
 
