@@ -26,6 +26,12 @@ import {
     spring,
 } from 'framer-motion'
 import React from 'react'
+import { NextSeo } from 'next-seo'
+
+const ogImageUrl = new URL(
+    require('@app/../public/og.jpeg')?.default.src,
+    'https://framer-motion-visualizer.vercel.app',
+).toString()
 
 function App() {
     const [mode, setMode] = useState<'duration' | 'mass'>('mass')
@@ -126,6 +132,32 @@ function App() {
 
     return (
         <div className='flex mt-24 text-base flex-col w-full items-center my-12 gap-12 min-w-0'>
+            <NextSeo
+                {...{
+                    title: 'Framer Motion Visulaizer with Examples',
+
+                    description:
+                        'Visualize Framer Motion animations on a graph, try out values with examples.',
+                    // canonical: 'https://tiktoktts.com/tiktok',
+                    openGraph: {
+                        images: [{ url: ogImageUrl }],
+                    },
+                    twitter: {
+                        cardType: 'summary_large_image',
+                    },
+                    // additionalLinkTags: [
+                    //     {
+                    //         rel: 'icon',
+                    //         href: faviconUrl,
+                    //     },
+                    //     {
+                    //         rel: 'apple-touch-icon',
+                    //         href: faviconUrl,
+                    //         // sizes: '76x76',
+                    //     },
+                    // ],
+                }}
+            />
             {/* <pre className=''>{JSON.stringify(state, null, 4)}</pre> */}
             {/* <pre className=''>{JSON.stringify(chartData, null, 4)}</pre> */}
             <div className='text-center space-y-4'>
