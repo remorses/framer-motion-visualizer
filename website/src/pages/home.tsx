@@ -133,7 +133,7 @@ function App() {
                     Framer Motion Visualizer
                 </h1>
                 <h2 className='text-lg leading-relaxed opacity-70'>
-                    Visualize Framer Motion animations
+                    Visualize Framer Motion Animations
                     <br />
                     Made by{' '}
                     <a
