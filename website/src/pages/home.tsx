@@ -28,7 +28,7 @@ import {
 import React from 'react'
 
 function App() {
-    const [mode, setMode] = useState<'duration' | 'mass'>('duration')
+    const [mode, setMode] = useState<'duration' | 'mass'>('mass')
 
     const initialState = (mode) =>
         mode === 'duration'
@@ -65,12 +65,12 @@ function App() {
               }
             : ({
                   stiffness: {
-                      min: 0,
+                      min: 1,
                       max: 1000,
                       step: 1,
                   },
                   damping: {
-                      min: 0,
+                      min: 1,
                       max: 100,
                       step: 1,
                   },
@@ -190,7 +190,7 @@ function App() {
                                 setState(initialState(mode))
                             }}
                             selected={mode}
-                            options={['duration', 'mass'].map((x) => ({
+                            options={['mass', 'duration'].map((x) => ({
                                 value: x,
                                 name: x,
                             }))}
@@ -238,7 +238,7 @@ function App() {
                 >
                     <div className='absolute h-1 rounded bg-gray-200 w-full'></div>
                     <motion.div
-                        className='z-1 relative rounded-full border-blue-500 border-4 bg-white'
+                        className='z-1 relative rounded-full border-blue-500 border-4 bg-gray-50/10'
                         // drag
                         // dragConstraints={container}
                         // animate={controls}
