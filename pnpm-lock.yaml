@@ -85,6 +85,7 @@ importers:
       '@types/node': 17.0.36
       '@types/nodemailer': ^6.4.6
       '@types/react': 18.0.9
+      '@vercel/analytics': ^0.1.8
       autoprefixer: ^10.4.7
       babel-loader: ^8.2.5
       baby-i-am-faded: ^4.0.14
@@ -121,6 +122,7 @@ importers:
       '@sentry/nextjs': 7.36.0_next@13.1.5+react@18.2.0
       '@splitbee/web': 0.3.0
       '@tremor/react': 1.7.0_biqbaboplfbrettd7655fr4n2y
+      '@vercel/analytics': 0.1.8_react@18.2.0
       babel-loader: 8.3.0
       baby-i-am-faded: 4.0.14_react@18.2.0
       beskar: link:../beskar
@@ -2494,6 +2496,14 @@ packages:
       '@typescript-eslint/types': 5.50.0
       eslint-visitor-keys: 3.3.0
     dev: true
+
+  /@vercel/analytics/0.1.8_react@18.2.0:
+    resolution: {integrity: sha512-PQrOI8BJ9qUiVJuQfnKiJd15eDjDJH9TBKsNeMrtelT4NAk7d9mBVz1CoZkvoFnHQ0OW7Xnqmr1F2nScfAnznQ==}
+    peerDependencies:
+      react: ^16.8||^17||^18
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /@visx/axis/2.18.0_react@18.2.0:
     resolution: {integrity: sha512-iBMObSKHOHDZbuVXsdVLmAjLE5jCN1Ls3XI57v3yuf+qZ327mdPSliSOyOxhvRdaNDYPLSQj+P1nKan+04wJiQ==}

@@ -1,6 +1,8 @@
 import 'baby-i-am-faded/styles.css'
 import '@app/styles/index.css'
 import '@tremor/react/dist/esm/tremor.css'
+import { Analytics } from '@vercel/analytics/react'
+
 import { ThemeProvider } from 'next-themes'
 import NextNprogress from 'nextjs-progressbar'
 
@@ -16,6 +18,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
     return (
         <>
             {/* <Script async src='https://cdn.splitbee.io/sb.js'></Script> */}
+            <Analytics />
 
             <BeskarProvider>
                 <ThemeProvider
