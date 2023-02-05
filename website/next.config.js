@@ -29,7 +29,7 @@ const isPreview =
 
 /** @type {import('next').NextConfig} */
 const config = {
-    reactStrictMode: true,
+    reactStrictMode: false,
     productionBrowserSourceMaps: true,
     output: 'standalone',
     outputFileTracing: true,
