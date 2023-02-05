@@ -14,6 +14,7 @@ import {
 
 import { BadgeSelect } from 'beskar/src/analytics/components/badge-select'
 import { RangeSlider } from 'beskar/src/landing/form'
+import { Button } from 'beskar/src/landing/'
 // import { Button, Link } from 'beskar/src/landing'
 
 import classNames from 'classnames'
@@ -88,18 +89,23 @@ function App() {
               } as const)
 
     let lastValue = 300
+    let [count, setCount] = useState(0)
     useDebouncedEffect(() => {
         let animations = []
         x.jump(0)
+
         let c = animate(x, lastValue, {
             type: 'spring',
+            // repeat: Infinity,
+            // repeatType: 'reverse',
             ...state,
+            onComplete: () => {},
         })
         animations.push(c)
         return () => {
             animations.forEach((a) => a.stop())
         }
-    }, [state])
+    }, [count, state])
     let [chartData, setChartData] = useState([])
     useDebouncedEffect(() => {
         let from = 0
@@ -260,7 +266,7 @@ function App() {
                 </div>
             </div>
 
-            <div className='flex flex-col items-center'>
+            <div className='flex flex-col items-center gap-2'>
                 <div
                     style={{ width: lastValue + size / 2 }}
                     className='relative items-start justify-center flex rounded flex-col'
@@ -287,6 +293,13 @@ function App() {
                         // }}
                     ></motion.div>
                 </div>
+                <Button
+                    ghost
+                    className='text-sm font-semibold'
+                    onClick={() => setCount((x) => x + 1)}
+                >
+                    Repeat
+                </Button>
             </div>
         </div>
     )
