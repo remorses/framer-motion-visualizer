@@ -43,7 +43,7 @@ function App() {
         mode === 'duration'
             ? {
                   duration: {
-                      min: 0,
+                      min: 0.1,
                       max: 10,
                       step: 0.1,
                   },
@@ -106,7 +106,7 @@ function App() {
         })
         let keyframes = []
         let t = 0
-        let springTimeResolution = 10
+        let springTimeResolution = 20
         let status = { done: false, value: from }
         // let maxT = state.duration + 3 || 30
         while (!status.done) {
