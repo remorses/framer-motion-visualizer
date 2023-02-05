@@ -1,8 +1,6 @@
-
 import 'baby-i-am-faded/styles.css'
 import '@app/styles/index.css'
 import '@tremor/react/dist/esm/tremor.css'
-import { SessionProvider, signIn, useSession } from 'next-auth/react'
 import { ThemeProvider } from 'next-themes'
 import NextNprogress from 'nextjs-progressbar'
 
@@ -16,7 +14,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
     const router = useRouter()
 
     return (
-        <SessionProvider session={session}>
+        <>
             {/* <Script async src='https://cdn.splitbee.io/sb.js'></Script> */}
 
             <BeskarProvider>
@@ -43,7 +41,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
                     <Component {...pageProps} />
                 </ThemeProvider>
             </BeskarProvider>
-        </SessionProvider>
+        </>
     )
 }
 export default MyApp
