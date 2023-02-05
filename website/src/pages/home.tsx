@@ -235,7 +235,7 @@ function App() {
                 >
                     <div className='absolute h-1 rounded bg-gray-200 w-full'></div>
                     <motion.div
-                        className='z-1 relative rounded-full border-blue-500 border-4 bg-gray-50/10'
+                        className='z-1 relative rounded-full shadow-xl border-blue-500 border-4 bg-gray-50/10'
                         // drag
                         // dragConstraints={container}
                         // animate={controls}
