@@ -81,9 +81,6 @@ function App() {
                   },
               } as const)
 
-    // const [count, setCount] = useState(0)
-
-    const [loaded, setLoaded] = useState(false)
     let lastValue = 300
     useDebouncedEffect(() => {
         let animations = []
@@ -96,7 +93,7 @@ function App() {
         return () => {
             animations.forEach((a) => a.stop())
         }
-    }, [loaded, state])
+    }, [state])
     let [chartData, setChartData] = useState([])
     useDebouncedEffect(() => {
         let from = 0
@@ -126,7 +123,7 @@ function App() {
     }, [state])
     let size = 40
     const container = useRef(null)
-    let videoRef = useRef<HTMLVideoElement>(null)
+
     return (
         <div className='flex mt-12 text-base flex-col w-full items-center my-12 gap-12 min-w-0'>
             {/* <pre className=''>{JSON.stringify(state, null, 4)}</pre> */}
@@ -135,15 +132,15 @@ function App() {
                 <h1 className='text-5xl font-bold tracking-tight'>
                     Framer Motion Visualizer
                 </h1>
-                <h2 className='text-xl leading-relaxed opacity-70'>
+                <h2 className='text-lg leading-relaxed opacity-70'>
                     Visualize Framer Motion animations
                     <br />
                     Made by{' '}
                     <a
                         href='https://twitter.com/__morse'
-                        className='appearance-none font-semibold '
+                        className='appearance-none font-semibold hover:underline'
                     >
-                        @morse
+                        @__morse
                     </a>
                 </h2>
             </div>
