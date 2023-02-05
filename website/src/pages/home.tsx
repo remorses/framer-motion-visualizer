@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import '@tremor/react/dist/esm/tremor.css'
+import { GetStaticPropsContext } from 'next'
+
 import {
     Card,
     Title,
@@ -15,8 +16,6 @@ import { BadgeSelect } from 'beskar/src/analytics/components/badge-select'
 import { RangeSlider } from 'beskar/src/landing/form'
 // import { Button, Link } from 'beskar/src/landing'
 
-import logo from './logo.svg'
-import './index.css'
 import classNames from 'classnames'
 import {
     motion,
@@ -201,7 +200,7 @@ function App() {
                         let conf = config[key as keyof typeof config]
                         let value = state[key as keyof typeof state] || 0
                         return (
-                            <div className='text-sm'>
+                            <div key={key} className='text-sm'>
                                 <div className='flex'>
                                     <div className='capitalize'>{key}</div>
                                     <div className='grow'></div>
@@ -239,8 +238,9 @@ function App() {
                 >
                     <div className='absolute h-1 rounded bg-gray-200 w-full'></div>
                     <motion.div
-                        drag
-                        dragConstraints={container}
+                        className='z-1 relative rounded-full border-blue-500 border-4 bg-white'
+                        // drag
+                        // dragConstraints={container}
                         // animate={controls}
                         style={{ x, width: size, height: size }}
                         // animate={{
@@ -256,8 +256,6 @@ function App() {
                         //     repeat: Infinity,
                         //     repeatType: 'reverse',
                         // }}
-
-                        className='z-1 relative rounded-full bg-blue-500'
                     ></motion.div>
                 </div>
             </div>
@@ -270,7 +268,7 @@ const valueFormatterAbsolute = (number: number) =>
 
 export default App
 
-export function useDebouncedEffect(callback, deps = [], delay = 120) {
+function useDebouncedEffect(callback, deps = [], delay = 120) {
     const data = React.useRef({
         firstTime: true,
         clearFunc: null as Function | null,
@@ -293,4 +291,10 @@ export function useDebouncedEffect(callback, deps = [], delay = 120) {
             clearTimeout(handler)
         }
     }, [delay, ...deps])
+}
+
+export function getStaticProps(ctx: GetStaticPropsContext) {
+    return {
+        props: {},
+    }
 }

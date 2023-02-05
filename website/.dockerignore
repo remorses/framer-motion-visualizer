@@ -1,0 +1,8 @@
+.env*
+README.md
+# ignore prisma because it's a native dependency and we need to install it inside docker
+**/@prisma*
+**/node_modules/canvas
+**/node_modules/.prisma
+**/node_modules/@prisma
+**/*.env*
