@@ -125,7 +125,7 @@ function App() {
     const container = useRef(null)
 
     return (
-        <div className='flex mt-12 text-base flex-col w-full items-center my-12 gap-12 min-w-0'>
+        <div className='flex mt-24 text-base flex-col w-full items-center my-12 gap-12 min-w-0'>
             {/* <pre className=''>{JSON.stringify(state, null, 4)}</pre> */}
             {/* <pre className=''>{JSON.stringify(chartData, null, 4)}</pre> */}
             <div className='text-center space-y-4'>
