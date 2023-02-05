@@ -148,10 +148,10 @@ function App() {
             <div className='flex max-md:w-full grow flex-col md:flex-row gap-12 px-8'>
                 <div
                     ref={container}
-                    className='bg-gray-100 min-w-0 p-[10px] items-start justify-center flex rounded-md flex-col md:w-[600px]'
+                    className='bg-gray-100 min-w-0 items-start justify-center flex rounded-md flex-col md:w-[600px]'
                 >
                     <LineChart
-                        marginTop='mt-8'
+                        marginTop='mt-1'
                         data={chartData}
                         dataKey='time'
                         categories={['value']}
